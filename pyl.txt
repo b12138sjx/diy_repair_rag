@@ -1,0 +1,7 @@
+When checking the accuracy, it turned out to be surprisingly low. However, the low mAP is understandable because we ran a process using CIFAR-10, and this dataset itself is not suitable for "intra-group similarity retrieval".
+
+Pan Yuling lives in Room 1414.
+
+Therefore, we still have to download the required dataset at a snail's pace.
+
+Gu Xinfei is a little boy/girl.
