@@ -199,6 +199,7 @@ custom_css = """
 .gradio-container {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif !important;
     background: linear-gradient(135deg, #f7f3e9 0%, #ede0d3 100%) !important;
+    border-radius: 16px !important;
 }
 
 /* 主标题样式 */
@@ -208,7 +209,7 @@ custom_css = """
     color: #fff5f0 !important;
     padding: 2rem;
     margin: 0 0 2rem 0;
-    border-radius: 15px;
+    border-radius: 20px;
     box-shadow: 0 8px 25px rgba(107, 90, 71, 0.15);
     font-size: 2.5rem !important;
     font-weight: 700 !important;
@@ -216,11 +217,12 @@ custom_css = """
 
 /* 标签页样式 */
 .tab-nav {
-    background: #faf8f5;
-    border-radius: 12px;
+    background: rgba(250, 248, 245, 0.95);
+    border-radius: 16px;
     box-shadow: 0 4px 15px rgba(139, 115, 85, 0.1);
     margin-bottom: 1.5rem;
     border: 1px solid #e8ddd4 !important;
+    backdrop-filter: blur(10px);
 }
 
 .tab-nav button {
@@ -247,122 +249,185 @@ custom_css = """
 
 /* 卡片容器样式 */
 .card-container {
-    background: #faf8f5;
-    border-radius: 15px;
+    background: rgba(250, 248, 245, 0.95);
+    border-radius: 20px;
     padding: 2rem;
-    box-shadow: 0 6px 20px rgba(139, 115, 85, 0.08);
+    box-shadow: 0 8px 30px rgba(139, 115, 85, 0.12);
     margin-bottom: 1.5rem;
     border: 1px solid #e8ddd4;
+    backdrop-filter: blur(10px);
 }
 
 /* 按钮样式 */
 .btn-primary {
     background: linear-gradient(135deg, #8b7355 0%, #6d5a47 100%) !important;
     border: none !important;
-    border-radius: 25px !important;
-    padding: 12px 30px !important;
+    border-radius: 30px !important;
+    padding: 14px 32px !important;
     font-weight: 600 !important;
     font-size: 1rem !important;
     color: #fff5f0 !important;
-    transition: all 0.3s ease !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     box-shadow: 0 4px 12px rgba(139, 115, 85, 0.25) !important;
+    width: 100% !important;
+    margin: 1rem 0 !important;
 }
 
 .btn-primary:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 6px 18px rgba(139, 115, 85, 0.35) !important;
+    box-shadow: 0 8px 25px rgba(139, 115, 85, 0.35) !important;
     background: linear-gradient(135deg, #9d8466 0%, #7a6552 100%) !important;
+}
+
+.btn-primary:active {
+    transform: translateY(0px) !important;
+    box-shadow: 0 4px 12px rgba(139, 115, 85, 0.25) !important;
+}
+
+.btn-primary:disabled {
+    background: #c4b5a6 !important;
+    color: #8b7355 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: 0 2px 6px rgba(139, 115, 85, 0.15) !important;
 }
 
 /* 输入框样式 */
 .input-container {
-    border-radius: 12px !important;
+    # border-radius: 16px !important;
     border: 2px solid #e8ddd4 !important;
-    background: #faf8f5 !important;
+    background: rgba(250, 248, 245, 0.95) !important;
     transition: all 0.3s ease !important;
+    padding: 1rem !important;
 }
 
-.input-container:focus-within {
-    border-color: #8b7355 !important;
-    box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1) !important;
-    background: #ffffff !important;
-}
 
 /* 输出框样式 */
 .output-container {
-    background: #f5f1eb;
-    border-radius: 12px;
+    background: rgba(245, 241, 235, 0.95);
+    border-radius: 16px;
     border: 1px solid #e8ddd4;
-    padding: 1rem;
+    padding: 1.5rem;
     color: #4a3f36;
+    min-height: 200px;
+    backdrop-filter: blur(5px);
 }
 
 /* 文件上传区域样式 */
 .file-upload {
     border: 2px dashed #c4b5a6 !important;
-    border-radius: 12px !important;
-    padding: 2rem !important;
+    border-radius: 20px !important;
+    padding: 3rem !important;
     text-align: center !important;
-    background: #f5f1eb !important;
+    background: rgba(245, 241, 235, 0.8) !important;
     transition: all 0.3s ease !important;
 }
 
 .file-upload:hover {
     border-color: #8b7355 !important;
-    background: #f0ebe4 !important;
+    background: rgba(240, 235, 228, 0.9) !important;
+    transform: translateY(-2px) !important;
 }
 
 /* 示例按钮样式 */
-.examples-container button {
-    background: #f0ebe4 !important;
-    border: 1px solid #e8ddd4 !important;
-    border-radius: 20px !important;
-    padding: 8px 16px !important;
-    color: #6d5a47 !important;
-    font-size: 0.9rem !important;
-    transition: all 0.3s ease !important;
-    margin: 4px !important;
+.examples-container {
+    margin-bottom: 0.5rem !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
 }
 
-.examples-container button:hover {
+/* 示例问题专用样式 */
+.gr-examples {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.gr-examples .examples {
+    margin: 0 !important;
+    padding: 0.5rem 0 !important;
+}
+
+.gr-examples .examples > div {
+    gap: 0.3rem !important;
+}
+
+.gr-examples button {
+    background: rgba(240, 235, 228, 0.9) !important;
+    border: 1px solid #e8ddd4 !important;
+    border-radius: 18px !important;
+    padding: 6px 12px !important;
+    color: #6d5a47 !important;
+    font-size: 0.8rem !important;
+    line-height: 1.2 !important;
+    transition: all 0.3s ease !important;
+    margin: 2px 3px !important;
+    min-height: auto !important;
+    height: auto !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+    max-width: 200px !important;
+}
+
+.gr-examples button:hover {
     background: #8b7355 !important;
     color: #fff5f0 !important;
     border-color: #8b7355 !important;
     transform: translateY(-1px) !important;
+    box-shadow: 0 2px 6px rgba(139, 115, 85, 0.2) !important;
 }
 
-/* 状态消息样式 */
-.status-success {
-    background: linear-gradient(135deg, #7d8471 0%, #6b7059 100%);
-    color: #fff5f0;
-    padding: 1rem;
-    border-radius: 10px;
-    margin: 1rem 0;
+.gr-examples .label {
+    display: none !important;
 }
 
-.status-error {
-    background: linear-gradient(135deg, #a67c52 0%, #8b6f47 100%);
-    color: #fff5f0;
-    padding: 1rem;
-    border-radius: 10px;
-    margin: 1rem 0;
+/* 移除Gradio默认组件样式 */
+.gr-group {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
 }
 
-/* 响应式设计 */
+/* 右侧面板样式 */
+.side-panel {
+    background: rgba(237, 232, 224, 0.8);
+    padding: 1.2rem;
+    border-radius: 16px;
+    border-left: 4px solid #7d8471;
+    margin-top: 0.8rem;
+    backdrop-filter: blur(5px);
+    height: fit-content;
+}
+
+/* 紧凑标题样式 */
+.compact-title {
+    margin-bottom: 0.5rem !important;
+    font-size: 1rem !important;
+}
+
+/* 响应式设计优化 */
 @media (max-width: 768px) {
     .main-title {
         font-size: 2rem !important;
         padding: 1.5rem !important;
+        border-radius: 16px;
     }
-
+    
     .card-container {
         padding: 1.5rem !important;
         margin: 1rem !important;
+        border-radius: 16px;
     }
-
+    
     .tab-nav button {
         padding: 0.8rem 1.5rem !important;
         font-size: 1rem !important;
+    }
+    
+    .btn-primary {
+        padding: 12px 24px !important;
     }
 }
 
@@ -384,17 +449,17 @@ custom_css = """
 
 /* 自定义滚动条 */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
 }
 
 ::-webkit-scrollbar-track {
     background: #f5f1eb;
-    border-radius: 4px;
+    border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
     background: #c4b5a6;
-    border-radius: 4px;
+    border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -475,44 +540,46 @@ with gr.Blocks(title="家居维修助手 - RAG系统", css=custom_css, theme=gr.
                 </div>
             """)
 
-            with gr.Row():
-                with gr.Column(scale=3):
-                    with gr.Group():
-                        question_input = gr.Textbox(
-                            label="💭 您的问题",
-                            show_label=True,
-                            max_lines=3,
-                            placeholder="请输入您想了解的问题...",
-                            elem_classes=["input-container"],
-                            container=True
-                        )
-                        ask_button = gr.Button(
-                            "🚀 获取答案",
-                            variant="primary",
-                            elem_classes=["btn-primary"],
-                            size="lg"
-                        )
-                        answer_output = gr.Textbox(
-                            label="🎯 AI回答",
-                            lines=12,
-                            elem_classes=["output-container"],
-                            interactive=False
-                        )
+            with gr.Row(equal_height=True):
+                with gr.Column(scale=3, elem_classes=["content-wrapper"]):
+                    question_input = gr.Textbox(
+                        label="💭 您的问题",
+                        show_label=True,
+                        max_lines=3,
+                        placeholder="请输入您想了解的问题...",
+                        elem_classes=["input-container", "component-spacing"]
+                    )
+                    
+                    ask_button = gr.Button(
+                        "🚀 获取答案",
+                        variant="primary",
+                        elem_classes=["btn-primary"],
+                        size="lg"
+                    )
+                    
+                    answer_output = gr.Textbox(
+                        label="🎯 AI回答",
+                        lines=12,
+                        elem_classes=["output-container"],
+                        interactive=False
+                    )
+                    
                 with gr.Column(scale=1):
                     gr.HTML("""
-                        <div style="margin: 1.5rem 0;">
-                            <h4 style="color: #6d5a47; margin-bottom: 1rem;">🎯 示例问题：</h4>
+                        <div style="margin-bottom: 0.5rem;">
+                            <h4 style="color: #6d5a47; margin-bottom: 0.5rem; text-align: center; font-size: 1rem;">🎯 示例问题</h4>
                         </div>
                     """)
+                    
                     gr.Examples(
                         examples=sample_prompts,
-                        inputs=question_input,
-                        label="点击下方示例快速开始："
+                        inputs=question_input
                     )
+                    
                     gr.HTML("""
-                        <div style="background: #ede8e0; padding: 1.5rem; border-radius: 12px; border-left: 4px solid #7d8471; margin-top: 1.5rem;">
-                            <h4 style="color: #4a3f36; margin-bottom: 1rem;">✨ 问答技巧</h4>
-                            <ul style="color: #6d5a47; line-height: 1.6;">
+                        <div class="side-panel">
+                            <h4 style="color: #4a3f36; margin-bottom: 0.8rem; text-align: center; font-size: 1rem;">✨ 问答技巧</h4>
+                            <ul style="color: #6d5a47; line-height: 1.6; margin: 0; padding-left: 1.2rem; font-size: 0.9rem;">
                                 <li>问题描述要具体清晰</li>
                                 <li>可以询问操作步骤</li>
                                 <li>支持故障诊断问题</li>
