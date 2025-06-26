@@ -121,7 +121,6 @@ Helpful answer:
 
 prompt = PromptTemplate(template=prompt_template, input_variables=['context', 'question'])
 
-
 # 创建通义千问LLM包装器
 class TongyiQianwenLLM(LLM):
     @property
@@ -136,14 +135,18 @@ class TongyiQianwenLLM(LLM):
     def _identifying_params(self) -> Mapping[str, Any]:
         return {"name": "tongyiqianwen"}
 
-
 # 初始化LLM
 llm = TongyiQianwenLLM()
 print("LLM Initialized...")
-
+# 初始化记忆列表
+history = []
 
 # 问答函数
 def get_response(input):
+    global history
+    # 构建历史记录字符串
+    history_str = "\n".join([f"用户: {h[0]}" for h in history])
+    his_prompt = str(history_str)
     if not os.path.exists(persist_directory) or not os.listdir(persist_directory):
         return "请先构建向量库！"
 
@@ -152,7 +155,7 @@ def get_response(input):
     retriever = load_vector_store.as_retriever(search_kwargs={"k": 3})
 
     # 创建检索QA链
-    chain_type_kwargs = {"prompt": prompt}
+    chain_type_kwargs = {"prompt": prompt+his_prompt}
     qa = RetrievalQA.from_chain_type(
         llm=llm,
         chain_type="stuff",
@@ -162,7 +165,21 @@ def get_response(input):
         verbose=True
     )
 
-    response = qa(input)
+    # 调用QA链，将 'question' 替换为 'query'
+    response = qa({"query": input})
+    # 更新记忆列表
+    history.append((input, response['result']))
+    if len(history) > 10:
+        history.pop(0)
+    # 生成相关问题
+    related_questions_prompt = f"根据问题 '{input}' 和上下文 '{response['source_documents']}' 生成三个相关问题。"
+    related_questions_response = get_completion(related_questions_prompt)
+    related_questions = related_questions_response.strip().split('\n')[:3]
+
+    # 将相关问题添加到 sample_prompts 列表
+    global sample_prompts
+    sample_prompts.extend(related_questions)
+
     return response['result']
 
 
