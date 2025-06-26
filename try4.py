@@ -121,6 +121,7 @@ Helpful answer:
 
 prompt = PromptTemplate(template=prompt_template, input_variables=['context', 'question'])
 
+
 # 创建通义千问LLM包装器
 class TongyiQianwenLLM(LLM):
     @property
@@ -135,34 +136,37 @@ class TongyiQianwenLLM(LLM):
     def _identifying_params(self) -> Mapping[str, Any]:
         return {"name": "tongyiqianwen"}
 
+
 # 初始化LLM
 llm = TongyiQianwenLLM()
 print("LLM Initialized...")
 # 初始化记忆列表
 history = []
 # 示例提示
-sample_prompts = ["红木维修守则?", "华为手机?", "哪些因素可能导致断电?"]
-# 问答函数
-def get_response(input):
+sample_prompts = ["电子废弃物回收法规?", "灯泡维修?", "水龙头漏水怎么办?"]
+
+
+# 问答函数 - 修改返回值，同时返回答案和更新后的示例
+def get_response(input, examples_state):
     global history
     # 构建历史记录字符串
     history_str = "\n".join([f"用户: {h[0]}" for h in history])
     his_prompt = str(history_str)
     if not os.path.exists(persist_directory) or not os.listdir(persist_directory):
-        return "请先构建向量库！"
+        return "请先构建向量库！", examples_state  # 返回当前示例状态
 
     # 加载向量数据库
     load_vector_store = Chroma(persist_directory=persist_directory, embedding_function=embeddings)
     retriever = load_vector_store.as_retriever(search_kwargs={"k": 3})
 
     # 创建检索QA链
-    chain_type_kwargs = {"prompt": prompt+"如果用户询问的是prompt里有相关信息的问题\
+    chain_type_kwargs = {"prompt": prompt + "如果用户询问的是prompt里有相关信息的问题\
     那么不需要主动结合以下历史信息。\
     以下是我（用户）告诉你的历史信息，其中“我”均指代用户本人。\
     请在处理信息时，将“我”转换为“您”（用户），并确保不将“我”误判为AI自身。\
     例如若历史信息为“我是奶龙”，请理解为“您是奶龙”（用户是奶龙），而非AI自称。所有以第一人称表述的内容，\
     均为用户的陈述，而非AI的身份信息。注意，用户没有明确提到历史信息需要的部分则无需主动提及\
-    请严格遵循上述规则处理以下信息：  "+his_prompt}
+    请严格遵循上述规则处理以下信息：  " + his_prompt}
     qa = RetrievalQA.from_chain_type(
         llm=llm,
         chain_type="stuff",
@@ -178,19 +182,29 @@ def get_response(input):
     history.append((input, response['result']))
     if len(history) > 10:
         history.pop(0)
+
     # 生成相关问题
     related_questions_prompt = f"根据问题 '{input}' 和结果 '{response['result']}' \
     生成三个推荐用户询问的相关问题,以换行符分隔"
     related_questions_response = get_completion(related_questions_prompt)
     related_questions = related_questions_response.strip().split('\n')[:3]
 
-    # 将相关问题添加到 sample_prompts 列表
+    # 更新全局示例列表和状态
     global sample_prompts
-    sample_prompts=related_questions
-    print(sample_prompts)
-    return response['result']
+    sample_prompts = related_questions
+    print("更新后的示例问题:", sample_prompts)
+
+    return response['result'], related_questions  # 返回答案和新示例
 
 
+# 将示例问题填入输入框的辅助函数
+def fill_question(selected_example):
+    return selected_example
+
+
+# 更新示例下拉菜单的辅助函数
+def update_examples(examples_state):
+    return gr.update(choices=examples_state)
 
 
 # 自定义CSS样式
@@ -504,11 +518,31 @@ with gr.Blocks(title="家居维修助手 - RAG系统", css=custom_css, theme=gr.
                             <h4 style="color: #6d5a47; margin-bottom: 1rem;">🎯 示例问题：</h4>
                         </div>
                     """)
-                    gr.Examples(
-                        examples=sample_prompts,
-                        inputs=question_input,
-                        label="点击下方示例快速开始："
+
+                    # 使用gr.Dropdown和gr.Button替代gr.Examples
+                    examples_state = gr.State(sample_prompts)
+
+                    # 创建示例问题下拉菜单
+                    example_dropdown = gr.Dropdown(
+                        choices=sample_prompts,
+                        label="选择示例问题",
+                        interactive=True
                     )
+
+                    # 创建"使用示例"按钮
+                    use_example_btn = gr.Button(
+                        "使用此示例",
+                        variant="secondary",
+                        elem_classes=["btn-primary"]
+                    )
+
+                    # 绑定按钮点击事件，将选中的示例填入输入框
+                    use_example_btn.click(
+                        fn=fill_question,
+                        inputs=example_dropdown,
+                        outputs=question_input
+                    )
+
                     gr.HTML("""
                         <div style="background: #ede8e0; padding: 1.5rem; border-radius: 12px; border-left: 4px solid #7d8471; margin-top: 1.5rem;">
                             <h4 style="color: #4a3f36; margin-bottom: 1rem;">✨ 问答技巧</h4>
@@ -521,11 +555,16 @@ with gr.Blocks(title="家居维修助手 - RAG系统", css=custom_css, theme=gr.
                         </div>
                     """)
 
+            # 修改按钮点击事件，添加examples_state作为输入和输出
             ask_button.click(
                 fn=get_response,
-                inputs=question_input,
-                outputs=answer_output,
-                api_name="get_answer"
+                inputs=[question_input, examples_state],
+                outputs=[answer_output, examples_state]
+            ).then(
+                # 问答完成后，更新下拉菜单的选项
+                fn=update_examples,
+                inputs=examples_state,
+                outputs=example_dropdown
             )
 
     # 页脚信息
