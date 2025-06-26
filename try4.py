@@ -198,31 +198,52 @@ custom_css = """
 /* 全局样式 */
 .gradio-container {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif !important;
-    background: linear-gradient(135deg, #f7f3e9 0%, #ede0d3 100%) !important;
+    background: 
+        linear-gradient(rgba(247, 243, 233, 0.85), rgba(237, 224, 211, 0.85)),
+        url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
     border-radius: 16px !important;
+    min-height: 100vh !important;
+}
+
+/* 为整个应用添加半透明背景层 */
+.gradio-container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(247, 243, 233, 0.3);
+    z-index: -1;
+    pointer-events: none;
 }
 
 /* 主标题样式 */
 .main-title {
     text-align: center;
-    background: linear-gradient(135deg, #8b7355 0%, #6d5a47 100%);
+    background: linear-gradient(135deg, rgba(139, 115, 85, 0.95) 0%, rgba(109, 90, 71, 0.95) 100%);
     color: #fff5f0 !important;
     padding: 2rem;
     margin: 0 0 2rem 0;
     border-radius: 20px;
-    box-shadow: 0 8px 25px rgba(107, 90, 71, 0.15);
+    box-shadow: 0 8px 25px rgba(107, 90, 71, 0.25);
     font-size: 2.5rem !important;
     font-weight: 700 !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* 标签页样式 */
 .tab-nav {
     background: rgba(250, 248, 245, 0.95);
     border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(139, 115, 85, 0.1);
+    box-shadow: 0 4px 15px rgba(139, 115, 85, 0.2);
     margin-bottom: 1.5rem;
-    border: 1px solid #e8ddd4 !important;
-    backdrop-filter: blur(10px);
+    border: 1px solid rgba(232, 221, 212, 0.8) !important;
+    backdrop-filter: blur(15px);
 }
 
 .tab-nav button {
@@ -237,14 +258,14 @@ custom_css = """
 }
 
 .tab-nav button:hover {
-    background: #f0ebe4 !important;
+    background: rgba(240, 235, 228, 0.8) !important;
     color: #8b7355 !important;
 }
 
 .tab-nav button.selected {
-    background: linear-gradient(135deg, #8b7355 0%, #6d5a47 100%) !important;
+    background: linear-gradient(135deg, rgba(139, 115, 85, 0.95) 0%, rgba(109, 90, 71, 0.95) 100%) !important;
     color: #fff5f0 !important;
-    box-shadow: 0 3px 12px rgba(139, 115, 85, 0.3) !important;
+    box-shadow: 0 3px 12px rgba(139, 115, 85, 0.4) !important;
 }
 
 /* 卡片容器样式 */
@@ -252,15 +273,15 @@ custom_css = """
     background: rgba(250, 248, 245, 0.95);
     border-radius: 20px;
     padding: 2rem;
-    box-shadow: 0 8px 30px rgba(139, 115, 85, 0.12);
+    box-shadow: 0 8px 30px rgba(139, 115, 85, 0.18);
     margin-bottom: 1.5rem;
-    border: 1px solid #e8ddd4;
-    backdrop-filter: blur(10px);
+    border: 1px solid rgba(232, 221, 212, 0.6);
+    backdrop-filter: blur(15px);
 }
 
 /* 按钮样式 */
 .btn-primary {
-    background: linear-gradient(135deg, #8b7355 0%, #6d5a47 100%) !important;
+    background: linear-gradient(135deg, rgba(139, 115, 85, 0.95) 0%, rgba(109, 90, 71, 0.95) 100%) !important;
     border: none !important;
     border-radius: 30px !important;
     padding: 14px 32px !important;
@@ -268,37 +289,39 @@ custom_css = """
     font-size: 1rem !important;
     color: #fff5f0 !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    box-shadow: 0 4px 12px rgba(139, 115, 85, 0.25) !important;
+    box-shadow: 0 4px 12px rgba(139, 115, 85, 0.35) !important;
     width: 100% !important;
     margin: 1rem 0 !important;
+    backdrop-filter: blur(10px);
 }
 
 .btn-primary:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(139, 115, 85, 0.35) !important;
-    background: linear-gradient(135deg, #9d8466 0%, #7a6552 100%) !important;
+    box-shadow: 0 8px 25px rgba(139, 115, 85, 0.45) !important;
+    background: linear-gradient(135deg, rgba(157, 132, 102, 0.95) 0%, rgba(122, 101, 82, 0.95) 100%) !important;
 }
 
 .btn-primary:active {
     transform: translateY(0px) !important;
-    box-shadow: 0 4px 12px rgba(139, 115, 85, 0.25) !important;
+    box-shadow: 0 4px 12px rgba(139, 115, 85, 0.35) !important;
 }
 
 .btn-primary:disabled {
-    background: #c4b5a6 !important;
+    background: rgba(196, 181, 166, 0.8) !important;
     color: #8b7355 !important;
     cursor: not-allowed !important;
     transform: none !important;
-    box-shadow: 0 2px 6px rgba(139, 115, 85, 0.15) !important;
+    box-shadow: 0 2px 6px rgba(139, 115, 85, 0.2) !important;
 }
 
 /* 输入框样式 */
 .input-container {
     # border-radius: 16px !important;
-    border: 2px solid #e8ddd4 !important;
+    border: 2px solid rgba(232, 221, 212, 0.8) !important;
     background: rgba(250, 248, 245, 0.95) !important;
     transition: all 0.3s ease !important;
     padding: 1rem !important;
+    backdrop-filter: blur(10px);
 }
 
 
@@ -306,26 +329,27 @@ custom_css = """
 .output-container {
     background: rgba(245, 241, 235, 0.95);
     border-radius: 16px;
-    border: 1px solid #e8ddd4;
+    border: 1px solid rgba(232, 221, 212, 0.8);
     padding: 1.5rem;
     color: #4a3f36;
     min-height: 200px;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
 }
 
 /* 文件上传区域样式 */
 .file-upload {
-    border: 2px dashed #c4b5a6 !important;
+    border: 2px dashed rgba(196, 181, 166, 0.8) !important;
     border-radius: 20px !important;
     padding: 3rem !important;
     text-align: center !important;
-    background: rgba(245, 241, 235, 0.8) !important;
+    background: rgba(245, 241, 235, 0.9) !important;
     transition: all 0.3s ease !important;
+    backdrop-filter: blur(10px);
 }
 
 .file-upload:hover {
-    border-color: #8b7355 !important;
-    background: rgba(240, 235, 228, 0.9) !important;
+    border-color: rgba(139, 115, 85, 0.9) !important;
+    background: rgba(240, 235, 228, 0.95) !important;
     transform: translateY(-2px) !important;
 }
 
@@ -353,8 +377,8 @@ custom_css = """
 }
 
 .gr-examples button {
-    background: rgba(240, 235, 228, 0.9) !important;
-    border: 1px solid #e8ddd4 !important;
+    background: rgba(240, 235, 228, 0.95) !important;
+    border: 1px solid rgba(232, 221, 212, 0.8) !important;
     border-radius: 18px !important;
     padding: 6px 12px !important;
     color: #6d5a47 !important;
@@ -368,14 +392,15 @@ custom_css = """
     text-overflow: ellipsis !important;
     overflow: hidden !important;
     max-width: 200px !important;
+    backdrop-filter: blur(5px);
 }
 
 .gr-examples button:hover {
-    background: #8b7355 !important;
+    background: rgba(139, 115, 85, 0.95) !important;
     color: #fff5f0 !important;
-    border-color: #8b7355 !important;
+    border-color: rgba(139, 115, 85, 0.9) !important;
     transform: translateY(-1px) !important;
-    box-shadow: 0 2px 6px rgba(139, 115, 85, 0.2) !important;
+    box-shadow: 0 2px 6px rgba(139, 115, 85, 0.3) !important;
 }
 
 .gr-examples .label {
@@ -392,13 +417,14 @@ custom_css = """
 
 /* 右侧面板样式 */
 .side-panel {
-    background: rgba(237, 232, 224, 0.8);
+    background: rgba(237, 232, 224, 0.9);
     padding: 1.2rem;
     border-radius: 16px;
     border-left: 4px solid #7d8471;
     margin-top: 0.8rem;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
     height: fit-content;
+    box-shadow: 0 4px 15px rgba(139, 115, 85, 0.15);
 }
 
 /* 紧凑标题样式 */
@@ -409,6 +435,10 @@ custom_css = """
 
 /* 响应式设计优化 */
 @media (max-width: 768px) {
+    .gradio-container {
+        background-attachment: scroll !important;
+    }
+    
     .main-title {
         font-size: 2rem !important;
         padding: 1.5rem !important;
@@ -436,7 +466,7 @@ custom_css = """
     display: inline-block;
     width: 20px;
     height: 20px;
-    border: 3px solid #e8ddd4;
+    border: 3px solid rgba(232, 221, 212, 0.5);
     border-top: 3px solid #8b7355;
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -453,17 +483,17 @@ custom_css = """
 }
 
 ::-webkit-scrollbar-track {
-    background: #f5f1eb;
+    background: rgba(245, 241, 235, 0.8);
     border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #c4b5a6;
+    background: rgba(196, 181, 166, 0.8);
     border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #8b7355;
+    background: rgba(139, 115, 85, 0.8);
 }
 """
 
